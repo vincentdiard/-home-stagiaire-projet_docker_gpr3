@@ -1,0 +1,27 @@
+version: '3'
+services:
+  database:
+    image: postgres:${POSTGRES_IMAGE_VERSION}
+    env_file: 
+      - .envdatabase
+    volumes:
+      - database:/var/lib/postgresql/data
+    restart: always
+  app:
+    # Make sure to use the latest release from https://hedgedoc.org/latest-release
+    image: quay.io/hedgedoc/hedgedoc:1.8.2
+    env_file:
+      - .envhedgedoc
+
+    volumes:
+      - uploads:/hedgedoc/public/uploads
+    ports:
+      - "3000:3000"
+    restart: always
+    depends_on:
+      - database
+volumes:
+  database:
+  uploads:
+  
+  
